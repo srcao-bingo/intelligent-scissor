@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Scissor.h"
 #include<algorithm>
-const double SQRT2 = 1.4142135623730950488016887242097;
+const double SQRT2 = 1.4142;
 const double invSqrt2 = 1.0 / SQRT2;
 const double PI = 3.141592654f;
 const double invPi = 4.0 /( 3.0 * PI);
@@ -33,11 +33,11 @@ Scissor::Scissor(Mat& origin)
 	fgMat.create(src.size(), CV_32FC1);
 
 	fdMat.create(src.size(), CV_32FC1);
-	//Ã¿Ò»¸öÏñËØµã¶ÔÓ¦Ò»¸öÏñËØ½Úµã
+	//æ¯ä¸€ä¸ªåƒç´ ç‚¹å¯¹åº”ä¸€ä¸ªåƒç´ èŠ‚ç‚¹
 	nodes = new PixelNode[totalnum+10];
 
 	int index = 0;
-	//³õÊ¼»¯Ã¿¸ö½Úµã
+	//åˆå§‹åŒ–æ¯ä¸ªèŠ‚ç‚¹
 	for(int i = 0;i < row ; i++)
 		for (int j = 0; j < col; j++)
 		{
@@ -46,9 +46,9 @@ Scissor::Scissor(Mat& origin)
 			nodes[index].col = j;
 			nodes[index].totalCost = 0.0f;
 			nodes[index].thisIndex = index;
-			//ÆäÓà±äÁ¿ÔÙ·ÖÅä¿Õ¼äµÄÊ±ºòÒÑ¾­³õÊ¼»¯ºÃÁË
+			//å…¶ä½™å˜é‡å†åˆ†é…ç©ºé—´çš„æ—¶å€™å·²ç»åˆå§‹åŒ–å¥½äº†
 		}
-	//¼ÆËãÆ«µ¼Êı
+	//è®¡ç®—åå¯¼æ•°
 	calculateDxDy();
 	calculateFz();
 	calculateFg();
@@ -59,7 +59,7 @@ Scissor::Scissor(Mat& origin)
 
 void Scissor::filter(const Mat& origin, Mat& dst, Mat& kernel)
 {
-	//°Ñ¾í»ıºóµÄÊı¾İ×ª»»³É32Î»Ìá¸ß¾«¶È£¬filter»á¶Ô¶àÍ¨µÀ£¬·ÖÍ¨µÀ´¦Àí
+	//æŠŠå·ç§¯åçš„æ•°æ®è½¬æ¢æˆ32ä½æé«˜ç²¾åº¦ï¼Œfilterä¼šå¯¹å¤šé€šé“ï¼Œåˆ†é€šé“å¤„ç†
 	filter2D(origin, dst, CV_32F, kernel);
 }
 
@@ -73,7 +73,7 @@ void Scissor::calculateDxDy()
 void Scissor::calculateFz()
 {
 	int type = 0;
-	//¶ÔÓ¦µ¥Í¨µÀ£¬ÈıÍ¨µÀÉú³É²»Í¬µÄMat
+	//å¯¹åº”å•é€šé“ï¼Œä¸‰é€šé“ç”Ÿæˆä¸åŒçš„Mat
 	if (channels == 1)
 	{
 		type = CV_32FC1;
@@ -83,14 +83,14 @@ void Scissor::calculateFz()
 	}
 
 	Mat tmpFz(src.rows, src.cols, type);
-	//´æ·Å¸ßË¹ÂË²¨¹ıºóµÄÍ¼
+	//å­˜æ”¾é«˜æ–¯æ»¤æ³¢è¿‡åçš„å›¾
 	Mat afterBlur(src.rows, src.cols, src.type());
 
 	Size mysize;
-	//ÓÃ5*5µÄ¸ßË¹ºË
+	//ç”¨5*5çš„é«˜æ–¯æ ¸
 	mysize.width = mysize.height =  5;
 
-	//ÒòÎªµ¼Êı¶ÔÔëµãÃô¸Ğ£¬ÏÈÓÃ¸ßË¹ÂË²¨½µÔë !!!
+	//å› ä¸ºå¯¼æ•°å¯¹å™ªç‚¹æ•æ„Ÿï¼Œå…ˆç”¨é«˜æ–¯æ»¤æ³¢é™å™ª !!!
 	GaussianBlur(src, afterBlur,mysize , 0, 0);
 
 	filter(afterBlur, tmpFz, laplacian);//--------afterBlur----------------
@@ -105,9 +105,9 @@ void Scissor::calculateFz()
 
 		q = fzMat.ptr<float>(i);
 
-		//ÒòÎª±ßÔµ²ÉÓÃlaplacianËã×Ó¾í»ıºó£¬Èı¸öÍ¨µÀµÄ¶ş½×µ¼Êı¶¼Ğ¡ÓÚÁã£¬ËùÒÔÖ±½ÓÕÒÈı¸ö¶ş½×µ¼Êı¶¼Ğ¡ÓÚÁãµÄÏñËØµã£¬¾ÍÊÇ±ßÔµµã
-		for (int j = 0; j < colNums - 2; j += 3)//³µÉí²»ÍêÕû£¿£¿  
-											 //j = j + 3;Åå·şµÄÎåÌåÍ¶µØ£¬3¸öÏñËØ£¬µ÷ÁË°ë¸ö¶àĞ¡Ê±£¡£¡£¡
+		//å› ä¸ºè¾¹ç¼˜é‡‡ç”¨laplacianç®—å­å·ç§¯åï¼Œä¸‰ä¸ªé€šé“çš„äºŒé˜¶å¯¼æ•°éƒ½å°äºé›¶ï¼Œæ‰€ä»¥ç›´æ¥æ‰¾ä¸‰ä¸ªäºŒé˜¶å¯¼æ•°éƒ½å°äºé›¶çš„åƒç´ ç‚¹ï¼Œå°±æ˜¯è¾¹ç¼˜ç‚¹
+		for (int j = 0; j < colNums - 2; j += 3)//è½¦èº«ä¸å®Œæ•´ï¼Ÿï¼Ÿ  
+											 //j = j + 3;ä½©æœçš„äº”ä½“æŠ•åœ°ï¼Œ3ä¸ªåƒç´ ï¼Œè°ƒäº†åŠä¸ªå¤šå°æ—¶ï¼ï¼ï¼
 		{
 			
 			if (p[j] < FzTrs && p[j + 1] < FzTrs && p[j + 2] < FzTrs)
@@ -119,7 +119,7 @@ void Scissor::calculateFz()
 				q[count++] = 1;
 			}
 		}
-		//»¹Ô­
+		//è¿˜åŸ
 		count = 0;
 	}
 	p = q = NULL;
@@ -134,7 +134,7 @@ void Scissor::calculateFg()
 	float gMin = 6553666.0f;
 
 	int type = 0;
-	//¶ÔÓ¦µ¥Í¨µÀ£¬ÈıÍ¨µÀÉú³É²»Í¬µÄMat
+	//å¯¹åº”å•é€šé“ï¼Œä¸‰é€šé“ç”Ÿæˆä¸åŒçš„Mat
 	if (channels == 1)
 	{
 		type = CV_32FC1;
@@ -142,9 +142,9 @@ void Scissor::calculateFg()
 	else {
 		type = CV_32FC3;
 	}
-	//´æ·ÅÈı¸öÍ¨µÀµÄÌİ¶È·ùÖµ
+	//å­˜æ”¾ä¸‰ä¸ªé€šé“çš„æ¢¯åº¦å¹…å€¼
 	Mat tmpFg(src.rows, src.cols, type);
-	//ÇóÌİ¶È·ùÖµ
+	//æ±‚æ¢¯åº¦å¹…å€¼
 	for (int i = 0; i < Dx.rows; i++)
 	{
 		p = Dx.ptr<float>(i);
@@ -157,7 +157,7 @@ void Scissor::calculateFg()
 		}
 
 	}
-	//¼ÇÂ¼Ô­À´µÄÌİ¶È·ùÖµ£¬ÓÃÓÚÂ·¾¶ÀäÈ´¡£
+	//è®°å½•åŸæ¥çš„æ¢¯åº¦å¹…å€¼ï¼Œç”¨äºè·¯å¾„å†·å´ã€‚
 	oldFgMat = tmpFg.clone();
 
 	int count = 0;
@@ -167,7 +167,7 @@ void Scissor::calculateFg()
 
 		g = fgMat.ptr<float>(i);
 
-		//Ñ¡È¡Ã¿¸öÍ¨µÀµÄ×î´óÖµ,Ğ§¹û×îºÃ
+		//é€‰å–æ¯ä¸ªé€šé“çš„æœ€å¤§å€¼,æ•ˆæœæœ€å¥½
 		for (int j = 0; j < colNums - 2; j += 3)
 		{
 			
@@ -195,7 +195,7 @@ void Scissor::calculateFg()
 	{
 		g = fgMat.ptr<float>(i);
 
-		//Ìİ¶È·ùÖµÔ½´ó£¬±ßÔµµÄ¿ÉÄÜĞÔÔ½´ó£¬·ÑÓÃÔ½µÍ
+		//æ¢¯åº¦å¹…å€¼è¶Šå¤§ï¼Œè¾¹ç¼˜çš„å¯èƒ½æ€§è¶Šå¤§ï¼Œè´¹ç”¨è¶Šä½
 		for (int j = 0; j < fgMat.cols; j++)
 		{
 			g[j] = 1.0f - (g[j] - gMin) / coefG;
@@ -205,13 +205,13 @@ void Scissor::calculateFg()
 
 	p = q = g = NULL;
 
-	//×¢ÒâºóÃæÀÛ¼ÓµÄÊ±ºò£¬¶Ô½ÇÏßÒª³ıÒÔsqrt(2);
+	//æ³¨æ„åé¢ç´¯åŠ çš„æ—¶å€™ï¼Œå¯¹è§’çº¿è¦é™¤ä»¥sqrt(2);
 }
 //
-void Scissor::calculateFd()//Ë¼Â·±ØĞëÌØ±ğË³£¡£¡£¡
+void Scissor::calculateFd()//æ€è·¯å¿…é¡»ç‰¹åˆ«é¡ºï¼ï¼ï¼
 {
-	//ÏÈÇóÃ¿Ò»¸öÍ¨µÀµÄÌİ¶È·½ÏòµÄµ¥Î»·¨Ê¸Á¿£¬²¢ÇÒ´æµ½Ò»¸öMatÀï£¬±ÜÃâÖØ¸´ÇóÈ¡
-	//ÒòÎªÊÇ¶şÎ¬Ê¸Á¿£¬ËùÒÔÓÃÁ½Í¨µÀµÄMat´æ´¢
+	//å…ˆæ±‚æ¯ä¸€ä¸ªé€šé“çš„æ¢¯åº¦æ–¹å‘çš„å•ä½æ³•çŸ¢é‡ï¼Œå¹¶ä¸”å­˜åˆ°ä¸€ä¸ªMaté‡Œï¼Œé¿å…é‡å¤æ±‚å–
+	//å› ä¸ºæ˜¯äºŒç»´çŸ¢é‡ï¼Œæ‰€ä»¥ç”¨ä¸¤é€šé“çš„Matå­˜å‚¨
 	Mat tmpFd(src.rows, src.cols, CV_32FC2);
 	int count = 0 ;
 	float* dx;
@@ -224,10 +224,10 @@ void Scissor::calculateFd()//Ë¼Â·±ØĞëÌØ±ğË³£¡£¡£¡
 			count = 0;
 			dx = Dx.ptr<float>(i);
 			dy = Dy.ptr<float>(i);
-			p = tmpFd.ptr<Vec2f>(i);//ÎŞµĞĞÄÍ´µÄVec2f,ÆÆÊéÒ»¾ä»°´ø¹ı¡­¡­£¬°´vec2fµÄ·½Ê½·ÃÎÊ,¾ÍÊÇÍ¬Ê±·ÃÎÊÁ½¸öÍ¨µÀ
+			p = tmpFd.ptr<Vec2f>(i);//æ— æ•Œå¿ƒç—›çš„Vec2f,ç ´ä¹¦ä¸€å¥è¯å¸¦è¿‡â€¦â€¦ï¼ŒæŒ‰vec2fçš„æ–¹å¼è®¿é—®,å°±æ˜¯åŒæ—¶è®¿é—®ä¸¤ä¸ªé€šé“
 			for (int j = 0; j < colNums; j++)
 			{
-				//¹éÒ»»¯
+				//å½’ä¸€åŒ–
 				p[count] = normalize(Vec2f(dy[j], -dx[j]));
 
 				count++;
@@ -243,11 +243,11 @@ void Scissor::calculateFd()//Ë¼Â·±ØĞëÌØ±ğË³£¡£¡£¡
 			count = 0;
 			dx = Dx.ptr<float>(i);
 			dy = Dy.ptr<float>(i);
-			p = tmpFd.ptr<Vec2f>(i);//ÎŞµĞĞÄÍ´µÄVec2f,ÆÆÊéÒ»¾ä»°´ø¹ı¡­¡­1.5h
+			p = tmpFd.ptr<Vec2f>(i);//æ— æ•Œå¿ƒç—›çš„Vec2f,ç ´ä¹¦ä¸€å¥è¯å¸¦è¿‡â€¦â€¦1.5h
 			for (int j = 0; j < colNums - 2; j += 3)
 			{
-				//²ÉÓÃCSDN²©¿ÍÈıµÄ´¦Àí·½Ê½£¬½«Èı¸öÍ¨µÀµÄx·½ÏòÆ«µ¼ÊıÖµÏà¼Ó
-				//ÒòÎªÈı¸ö·¨Ê¸Á¿Ö®ºÍ¶ÔÂÖÀªµÄ·½Ïò¸Ä±äÃè»æÇåÎú£¬ÇÒÔËËã¿ì£¬ËùÒÔÊ¹ÓÃÀÛ¼Ó
+				//é‡‡ç”¨CSDNåšå®¢ä¸‰çš„å¤„ç†æ–¹å¼ï¼Œå°†ä¸‰ä¸ªé€šé“çš„xæ–¹å‘åå¯¼æ•°å€¼ç›¸åŠ 
+				//å› ä¸ºä¸‰ä¸ªæ³•çŸ¢é‡ä¹‹å’Œå¯¹è½®å»“çš„æ–¹å‘æ”¹å˜æç»˜æ¸…æ™°ï¼Œä¸”è¿ç®—å¿«ï¼Œæ‰€ä»¥ä½¿ç”¨ç´¯åŠ 
 				sumx = (dx[j] + dx[j + 1] + dx[j + 2]);
 				
 				sumy = (dy[j] + dy[j + 1] + dy[j + 2]);
@@ -266,31 +266,31 @@ void Scissor::calculateFd()//Ë¼Â·±ØĞëÌØ±ğË³£¡£¡£¡
 	long long index = 0;
 	int offSetRow, offSetCol;
 	float dp,dq,tmp;
-	//ÀûÓÃgenVectorÒÔ¼°nodes×Ô´øµÄº¯Êı£¬Éú³Ép-qµÄÎ»ÖÃÏòÁ¿£¬¼´ÓëÁÚ¾ÓÏà¶ÔÎ»ÖÃµÄÏòÁ¿¡£
+	//åˆ©ç”¨genVectorä»¥åŠnodesè‡ªå¸¦çš„å‡½æ•°ï¼Œç”Ÿæˆp-qçš„ä½ç½®å‘é‡ï¼Œå³ä¸é‚»å±…ç›¸å¯¹ä½ç½®çš„å‘é‡ã€‚
 
 
-	//£¡£¡£¡±ß½çÔªËØ²»¿¼ÂÇ£¬¼´×îÍâÃæÒ»È¦²»¿¼ÂÇ£¬ÒòÎª×îÍâÒ»È¦ÊÇ±ß½çÖ»ÓĞËÄ¸ö×ª½Çµã£¬Fd²»ÎªÁã£¬¿ÉÒÔºöÂÔ²»¼Æ£¡£¡£¡£¡£¡
+	//ï¼ï¼ï¼è¾¹ç•Œå…ƒç´ ä¸è€ƒè™‘ï¼Œå³æœ€å¤–é¢ä¸€åœˆä¸è€ƒè™‘ï¼Œå› ä¸ºæœ€å¤–ä¸€åœˆæ˜¯è¾¹ç•Œåªæœ‰å››ä¸ªè½¬è§’ç‚¹ï¼ŒFdä¸ä¸ºé›¶ï¼Œå¯ä»¥å¿½ç•¥ä¸è®¡ï¼ï¼ï¼ï¼ï¼
 	for (int i = 1; i < tmpFd.rows-1; i++)
 	{
 		for (int j = 1; j < tmpFd.cols-1; j++)
 		{
-			//µÃµ½µ¥Î»·¨Ê¸Á¿
+			//å¾—åˆ°å•ä½æ³•çŸ¢é‡
 			p = tmpFd.ptr<Vec2f>(i,j);
-			//ÕÒµ½¶ÔÓ¦ÏñËØ½ÚµãµÄÏÂ±ê,²»ÄÜÖ±½Óindex++,ÒòÎª±ßÔµµÄÄ¬ÈÏÎªÁã
+			//æ‰¾åˆ°å¯¹åº”åƒç´ èŠ‚ç‚¹çš„ä¸‹æ ‡,ä¸èƒ½ç›´æ¥index++,å› ä¸ºè¾¹ç¼˜çš„é»˜è®¤ä¸ºé›¶
 			index = i * tmpFd.cols + j;
 			
 			for (int k = 0; k < 8; k++)
 			{
 				
-				//µÃµ½ Q - P ÏòÁ¿ĞÎÊ½£¨Vec2f£© 
+				//å¾—åˆ° Q - P å‘é‡å½¢å¼ï¼ˆVec2fï¼‰ 
 				q_p = nodes[index].genVector(k);
-				//¶ÔÃ¿Ò»¸öÁÚ¾ÓÇóÒ»±éLpq,²¢¹éÒ»»¯
+				//å¯¹æ¯ä¸€ä¸ªé‚»å±…æ±‚ä¸€éLpq,å¹¶å½’ä¸€åŒ–
 				getLpq(q_p, (*p), Lpq);
-				//×¢ÒânbrNodeOffset£¬·µ»ØµÄÊÇÁĞ¡¢ĞĞ£¬±ğÅª·´ÁË£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡
+				//æ³¨æ„nbrNodeOffsetï¼Œè¿”å›çš„æ˜¯åˆ—ã€è¡Œï¼Œåˆ«å¼„åäº†ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼
 				nodes[index].nbrNodeOffset(offSetCol,offSetRow,k);
 				
 				q = tmpFd.ptr<Vec2f>(i + offSetRow, j + offSetCol);
-				//Çódp(p,q) dq(p,q)²¢¼ÆËãfD
+				//æ±‚dp(p,q) dq(p,q)å¹¶è®¡ç®—fD
 
 				tmpSum = normalize(*p + *q);
 
@@ -299,7 +299,7 @@ void Scissor::calculateFd()//Ë¼Â·±ØĞëÌØ±ğË³£¡£¡£¡
 				//dp = p->dot(Lpq);
 
 				//dq = q->dot(Lpq);
-				//----¾ßÌåÊµÏÖÊ±£¬ÎÒ½«Á½¸öµ¥Î»·¨ÏòÁ¿Ïà¼Ó£¬ÔÙ¹éÒ»»¯£¬ÔÙÇóÏà¼ÓºóµÄÏòÁ¿ÓëLpqÖ®¼äµÄ¼Ğ½Ç£¬ÒòÎª´ËÊ±£¬×î´óµÄ¼Ğ½ÇÎª3.0*pi/4,ËùÒÔ¹éÒ»»¯µÄÏµÊıÊÇ4/£¨3.0*pi£©
+				//----å…·ä½“å®ç°æ—¶ï¼Œæˆ‘å°†ä¸¤ä¸ªå•ä½æ³•å‘é‡ç›¸åŠ ï¼Œå†å½’ä¸€åŒ–ï¼Œå†æ±‚ç›¸åŠ åçš„å‘é‡ä¸Lpqä¹‹é—´çš„å¤¹è§’ï¼Œå› ä¸ºæ­¤æ—¶ï¼Œæœ€å¤§çš„å¤¹è§’ä¸º3.0*pi/4,æ‰€ä»¥å½’ä¸€åŒ–çš„ç³»æ•°æ˜¯4/ï¼ˆ3.0*piï¼‰
 				nodes[index].linkCost[k] = invPi *(acos(tmp))*WD;//--_2Over3PI *(acos(dp)+acos(dq))*WD ---------------invPi *(acos(tmp))*WD--------------
 
 
@@ -326,14 +326,14 @@ void Scissor::getLpq(Vec2f&p_q,Vec2f&Dp,Vec2f&Lpq)
 	}
 
 }
-//ÀÛ¼Óµ½ÁÚ¾ÓÉÏ,ÒÔÓÅ»¯
+//ç´¯åŠ åˆ°é‚»å±…ä¸Š,ä»¥ä¼˜åŒ–
 void Scissor::accumulateCost()
 {
 	long long index = 0;
 	int offSetRow, offSetCol ,i,j,k;
 	int rows = fzMat.rows, cols = fzMat.cols;
 	int neighborRow, neighborCol;
-	//long long neighborIndex;//Ë³±ã°ÑÁÚ¾ÓµÄË÷ÒıÒ²¼ÇÂ¼ÏÂÀ´£¬Õâ½Ğ×öË÷Òı½Úµã£¬ÎªºóÃæË÷ÒıÓÅÏÈ¶ÓÁĞ·şÎñ
+	//long long neighborIndex;//é¡ºä¾¿æŠŠé‚»å±…çš„ç´¢å¼•ä¹Ÿè®°å½•ä¸‹æ¥ï¼Œè¿™å«åšç´¢å¼•èŠ‚ç‚¹ï¼Œä¸ºåé¢ç´¢å¼•ä¼˜å…ˆé˜Ÿåˆ—æœåŠ¡
 	float *p, *q;
 	for ( i = 0; i < rows; i++)
 	{
@@ -343,11 +343,11 @@ void Scissor::accumulateCost()
 
 			for (k = 0; k < 8; k++)
 			{
-				//ÏÈ·µ»ØÁĞÔÙ·µ»ØĞĞ¡­¡­¡­¡­¡­¡­
+				//å…ˆè¿”å›åˆ—å†è¿”å›è¡Œâ€¦â€¦â€¦â€¦â€¦â€¦
 				nodes[index].nbrNodeOffset(offSetCol, offSetRow, k);
 				neighborRow = i + offSetRow;
 				neighborCol = j + offSetCol;
-				//Ô½½ç¼ì²é
+				//è¶Šç•Œæ£€æŸ¥
 				if (neighborCol < 0 || neighborCol >= cols || neighborRow < 0 || neighborRow >= rows)
 				{
 					continue;
@@ -357,10 +357,10 @@ void Scissor::accumulateCost()
 				q = fgMat.ptr<float>(neighborRow, neighborCol);
 
 				//neighborIndex = 
-				//²ÉÓÃÁËÂÛÎÄ¶şµÄ·½Ê½Îª£¬ÈÃÖ±½ÓÏàÁÚµÄFg»¨·Ñ³ıÒÔsqrt(2);
+				//é‡‡ç”¨äº†è®ºæ–‡äºŒçš„æ–¹å¼ä¸ºï¼Œè®©ç›´æ¥ç›¸é‚»çš„FgèŠ±è´¹é™¤ä»¥sqrt(2);
 				if (k % 2 == 0)
 				{
-					nodes[index].linkCost[k] += (*p)*WZ + (*q)*WG*invSqrt2;//--------------------------ÂÛÎÄ¶ş
+					nodes[index].linkCost[k] += (*p)*WZ + (*q)*WG*invSqrt2;//--------------------------è®ºæ–‡äºŒ
 				}
 				else
 				{
@@ -374,17 +374,17 @@ void Scissor::accumulateCost()
 		}
 	}
 }
-//pixelNodeÊı¾İ½á¹¹ĞŞ¸Ä£¬²éÕÒ±ÈËû¿ì£¬ÕûÌå¶Ô¶ÑµÄÊ¹ÓÃ»ù±¾Ò»ÖÂ¡£Ë÷ÒıÓÅÏÈ¶ÓÁĞ£¬ÖªµÀÔõÃ´ÓÃ¾ÍĞĞÁË¡£ÒÑÓÅ»¯£¬»¹ÓĞÒ»¸ötmpIndex¸³Öµ±ãÓÚÔÄ¶Á£¬¾Í²»ÔÚ¼ò»¯ÁË
+//pixelNodeæ•°æ®ç»“æ„ä¿®æ”¹ï¼ŒæŸ¥æ‰¾æ¯”ä»–å¿«ï¼Œæ•´ä½“å¯¹å †çš„ä½¿ç”¨åŸºæœ¬ä¸€è‡´ã€‚ç´¢å¼•ä¼˜å…ˆé˜Ÿåˆ—ï¼ŒçŸ¥é“æ€ä¹ˆç”¨å°±è¡Œäº†ã€‚å·²ä¼˜åŒ–ï¼Œè¿˜æœ‰ä¸€ä¸ªtmpIndexèµ‹å€¼ä¾¿äºé˜…è¯»ï¼Œå°±ä¸åœ¨ç®€åŒ–äº†
 void Scissor::liveWire(long long index)//const int & col , const int & row
 {
 
-	//¾Ö²¿³õÊ¼»¯£¬¾ÍÊÇÏÈ°ÑÁÚ¾Ó³õÊ¼»¯£¬ÔÙ´ÓÁÚ¾ÓÀïÕÒ£¬»¨·Ñ×îĞ¡µÄ£¬
-	//Èç¹ûÓĞÁÚ¾ÓÒÑ¾­³õÊ¼»¯ºÃÁË£¬¾Í±È½ÏÖÖ×ÓµãÍ¨¹ıÕâ¸öµãµ½ËüµÄÁÚ¾ÓºÍÖÖ×ÓµãÍ¨¹ıÆäËûµãµ½ËüµÄ¾àÀë
-	//Èç¹û»¨·Ñ¸üĞ¡¾Í¸üĞÂupdata(r);
-	//Ö±µ½¶Ñ¿ÕÁË£¬ËµÃ÷ËùÓĞµã¶¼ÒÑ¾­±»À©Õ¹ÁË¡£
-	//ÒÔÏÂÈ«ÊÇÎÒ×Ô¼º°´ÕÕÖ®Ç°µÄÏë·¨ÒÔ¼°CSDNµÚÈı¸ö²©¿ÍµÄ²¿·ÖÓ¡ÏóĞ´µÄ
+	//å±€éƒ¨åˆå§‹åŒ–ï¼Œå°±æ˜¯å…ˆæŠŠé‚»å±…åˆå§‹åŒ–ï¼Œå†ä»é‚»å±…é‡Œæ‰¾ï¼ŒèŠ±è´¹æœ€å°çš„ï¼Œ
+	//å¦‚æœæœ‰é‚»å±…å·²ç»åˆå§‹åŒ–å¥½äº†ï¼Œå°±æ¯”è¾ƒç§å­ç‚¹é€šè¿‡è¿™ä¸ªç‚¹åˆ°å®ƒçš„é‚»å±…å’Œç§å­ç‚¹é€šè¿‡å…¶ä»–ç‚¹åˆ°å®ƒçš„è·ç¦»
+	//å¦‚æœèŠ±è´¹æ›´å°å°±æ›´æ–°updata(r);
+	//ç›´åˆ°å †ç©ºäº†ï¼Œè¯´æ˜æ‰€æœ‰ç‚¹éƒ½å·²ç»è¢«æ‰©å±•äº†ã€‚
+	//ä»¥ä¸‹å…¨æ˜¯æˆ‘è‡ªå·±æŒ‰ç…§ä¹‹å‰çš„æƒ³æ³•ä»¥åŠCSDNç¬¬ä¸‰ä¸ªåšå®¢çš„éƒ¨åˆ†å°è±¡å†™çš„
 
-	//Êó±êÊäÈëµÄ X = COL  Y = ROW
+	//é¼ æ ‡è¾“å…¥çš„ X = COL  Y = ROW
 	//int index = row * src.cols + col;
 	//int offSetRow, offSetCol, neiBorRow, neiBorCol;
 
@@ -406,7 +406,7 @@ void Scissor::liveWire(long long index)//const int & col , const int & row
 
 	while (!pq.IsEmpty())
 	{
-		//´Ó¶Ñ¶¥È¡³ö×îĞ¡µÄÔªËØ
+		//ä»å †é¡¶å–å‡ºæœ€å°çš„å…ƒç´ 
 		node = pq.ExtractMin();
 		node->state = EXPAND;
 		for (i = 0; i < 8; i++)
@@ -446,7 +446,7 @@ void Scissor::liveWire(long long index)//const int & col , const int & row
 
 	}
 
-	//ÒòÎªÃ¿Ò»´Îµã»÷¶¼»áÖØ¸´Ê¹ÓÃnodes,ËùÒÔ¶ÔnodesµÄ±êÖ¾±ØĞëÖØÖÃ
+	//å› ä¸ºæ¯ä¸€æ¬¡ç‚¹å‡»éƒ½ä¼šé‡å¤ä½¿ç”¨nodes,æ‰€ä»¥å¯¹nodesçš„æ ‡å¿—å¿…é¡»é‡ç½®
 	//-----------------------------------------------------------------------
 	for (i = 0; i < totalnum; i++)
 	{
@@ -480,11 +480,11 @@ void Scissor::showGray()
 
 	Mat tmpGray = Gray.clone();
 
-	//Ö±·½Í¼¾ùºâ»¯£¬Ôö¼Ó¶Ô±È¶È¡£
+	//ç›´æ–¹å›¾å‡è¡¡åŒ–ï¼Œå¢åŠ å¯¹æ¯”åº¦ã€‚
 	equalizeHist(Gray, tmpGray);
 
 	imshow("equalizeHistGray", tmpGray);
-	//gamaÔöÇ¿
+	//gamaå¢å¼º
 	double coef = 1.0 / (100.0),gama = 0.6;
 
 	for (int i = 0; i < tmpGray.rows; i++)
@@ -507,12 +507,12 @@ void Scissor::showGray()
 
 	Gray.~Mat();
 }
-//¹â±ê½ÃÕı
+//å…‰æ ‡çŸ«æ­£
 long long Scissor::cursorSnap(long long index) 
 {
 	if (index <0 || index >= totalnum)
 	{
-		std::cout << "Êó±ê×ø±êÔ½½ç" << std::endl;
+		std::cout << "é¼ æ ‡åæ ‡è¶Šç•Œ" << std::endl;
 		return 0;
 	}
 
@@ -569,9 +569,9 @@ void Scissor::calculateFg(Mat& myMat)
 	
 	int	type = CV_32FC1;
 	
-	//´æ·ÅÊÜÀíºóµÄ»Ò¶ÈÖµ
+	//å­˜æ”¾å—ç†åçš„ç°åº¦å€¼
 	Mat tmpFg(myMat.rows, myMat.cols, type);
-	//ÇóÌİ¶È·ùÖµ
+	//æ±‚æ¢¯åº¦å¹…å€¼
 	for (int i = 0; i < myMat.rows; i++)
 	{
 		p = dx.ptr<float>(i);
@@ -579,7 +579,7 @@ void Scissor::calculateFg(Mat& myMat)
 		g = tmpFg.ptr<float>(i);
 		for (int j = 0; j < myMat.cols; j++)
 		{
-			//Ö±½ÓËõ·Å³ıÒÔ255.0
+			//ç›´æ¥ç¼©æ”¾é™¤ä»¥255.0
 			g[j] = sqrt(p[j] * p[j] + q[j] * q[j])/255.0;
 		}
 
@@ -589,10 +589,10 @@ void Scissor::calculateFg(Mat& myMat)
 	{
 		g = tmpFg.ptr<float>(i);
 
-		//Ìİ¶È·ùÖµÔ½´ó£¬±ßÔµµÄ¿ÉÄÜĞÔÔ½´ó£¬·ÑÓÃÔ½µÍ
+		//æ¢¯åº¦å¹…å€¼è¶Šå¤§ï¼Œè¾¹ç¼˜çš„å¯èƒ½æ€§è¶Šå¤§ï¼Œè´¹ç”¨è¶Šä½
 		for (int j = 0; j < tmpFg.cols; j++)
 		{
-			//¼òµ¥µÄ¶şÖµ»¯£¬Ä¿µÄÊÇÈÃ±ßÔµÎªºÚÉ«£¬·Ç±ßÔµÎª°×É«
+			//ç®€å•çš„äºŒå€¼åŒ–ï¼Œç›®çš„æ˜¯è®©è¾¹ç¼˜ä¸ºé»‘è‰²ï¼Œéè¾¹ç¼˜ä¸ºç™½è‰²
 			if (g[j] >= 1.0)
 			{
 				g[j] = 0.0;
