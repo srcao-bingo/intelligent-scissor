@@ -1,0 +1,15 @@
+﻿  Scissor.cpp
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.h(115): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(268): warning C4101: “dq”: 未引用的局部变量
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(268): warning C4101: “dp”: 未引用的局部变量
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(476): warning C4244: “=”: 从“double”转换到“uchar”，可能丢失数据
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(494): warning C4244: “*=”: 从“double”转换到“uchar”，可能丢失数据
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(495): warning C4244: “=”: 从“double”转换到“uchar”，可能丢失数据
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(583): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\算法课设\智能剪刀\intelligent\intelligent\scissor.cpp(601): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码
+  0 of 965 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  intelligent.vcxproj -> E:\算法课设\智能剪刀\intelligent\x64\Release\intelligent_Scissor.exe

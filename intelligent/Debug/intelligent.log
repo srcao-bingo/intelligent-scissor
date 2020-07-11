@@ -1,0 +1,5 @@
+﻿  stdafx.cpp
+  main.cpp
+  Scissor.cpp
+  正在生成代码...
+LINK : fatal error LNK1104: 无法打开文件“opencv_world341d.lib”
