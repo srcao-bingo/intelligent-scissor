@@ -3,7 +3,7 @@
 #include<algorithm>
 const double SQRT2 = 1.4142;
 const double invSqrt2 = 1.0 / SQRT2;
-const double PI = 3.141592654f;
+const double PI = 3.1415926;
 const double invPi = 4.0 /( 3.0 * PI);
 //const double _2Over3PI = 2.0 / (3.0 * PI);
 extern int CURSERSNAPTRS = 10;
