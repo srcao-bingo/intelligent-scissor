@@ -243,7 +243,7 @@ void Scissor::calculateFd()//思路必须特别顺！！！
 			count = 0;
 			dx = Dx.ptr<float>(i);
 			dy = Dy.ptr<float>(i);
-			p = tmpFd.ptr<Vec2f>(i);//无敌心痛的Vec2f,破书一句话带过……1.5h
+			p = tmpFd.ptr<Vec2f>(i);
 			for (int j = 0; j < colNums - 2; j += 3)
 			{
 				//采用CSDN博客三的处理方式，将三个通道的x方向偏导数值相加
